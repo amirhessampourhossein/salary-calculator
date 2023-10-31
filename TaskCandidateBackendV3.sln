@@ -9,9 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{946D3D35-F38
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{24B1C1A9-A2A4-4EB3-B82D-4BE294949164}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalaryCalculator.Domain", "SalaryCalculator.Domain\SalaryCalculator.Domain.csproj", "{A67EC81F-7CED-4694-8964-E9919A5534CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalaryCalculator.Domain", "SalaryCalculator.Domain\SalaryCalculator.Domain.csproj", "{A67EC81F-7CED-4694-8964-E9919A5534CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalaryCalculator.Application", "SalaryCalculator.Application\SalaryCalculator.Application.csproj", "{2C635199-C50A-4019-A71D-BE5083840F39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalaryCalculator.Application", "SalaryCalculator.Application\SalaryCalculator.Application.csproj", "{2C635199-C50A-4019-A71D-BE5083840F39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalaryCalculator.Infrastructure", "SalaryCalculator.Infrastructure\SalaryCalculator.Infrastructure.csproj", "{AC10E0B8-AFCE-4D44-9D86-8EA14695BE41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{2C635199-C50A-4019-A71D-BE5083840F39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C635199-C50A-4019-A71D-BE5083840F39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C635199-C50A-4019-A71D-BE5083840F39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC10E0B8-AFCE-4D44-9D86-8EA14695BE41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC10E0B8-AFCE-4D44-9D86-8EA14695BE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC10E0B8-AFCE-4D44-9D86-8EA14695BE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC10E0B8-AFCE-4D44-9D86-8EA14695BE41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 		{3632631A-DFAB-47FE-AB8F-91D63C1DED31} = {946D3D35-F382-4A7B-82E9-095200FFD5B9}
 		{A67EC81F-7CED-4694-8964-E9919A5534CC} = {946D3D35-F382-4A7B-82E9-095200FFD5B9}
 		{2C635199-C50A-4019-A71D-BE5083840F39} = {946D3D35-F382-4A7B-82E9-095200FFD5B9}
+		{AC10E0B8-AFCE-4D44-9D86-8EA14695BE41} = {946D3D35-F382-4A7B-82E9-095200FFD5B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D555FB7-06A3-472B-B1F4-62E1B394D3AB}

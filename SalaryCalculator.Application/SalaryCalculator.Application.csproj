@@ -11,10 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EmployeeSalary\EditEmployeeSalary\" />
-    <Folder Include="EmployeeSalary\GetEmployeeSalary\" />
-    <Folder Include="EmployeeSalary\DeleteEmployeeSalary\" />
-    <Folder Include="EmployeeSalary\GetRangeEmployeeSalaries\" />
+    <ProjectReference Include="..\OvertimePolicies\OvertimePolicies.csproj" />
+    <ProjectReference Include="..\SalaryCalculator.Domain\SalaryCalculator.Domain.csproj" />
   </ItemGroup>
 
 </Project>

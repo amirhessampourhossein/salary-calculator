@@ -1,4 +1,4 @@
-﻿namespace SalaryCalculator.Domain.Abstractions;
+﻿namespace SalaryCalculator.Domain.Common;
 
 public abstract class Entity<TEntityId>
 {
