@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.Models;
 using SalaryCalculator.Domain.EmployeeSalaries;
 
@@ -6,9 +7,9 @@ namespace SalaryCalculator.Application.EmployeeSalaries.GetEmployeeSalary;
 
 public class GetEmployeeSalaryQueryHandler : IRequestHandler<GetEmployeeSalaryQuery, Result>
 {
-    private readonly IEmployeeSalaryRepository _employeeSalaryRepository;
+    private readonly IRepository<EmployeeSalary, EmployeeSalaryId> _employeeSalaryRepository;
 
-    public GetEmployeeSalaryQueryHandler(IEmployeeSalaryRepository employeeSalaryRepository)
+    public GetEmployeeSalaryQueryHandler(IRepository<EmployeeSalary, EmployeeSalaryId> employeeSalaryRepository)
     {
         _employeeSalaryRepository = employeeSalaryRepository;
     }

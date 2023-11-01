@@ -29,5 +29,8 @@ public class EmployeeSalaryConfiguration : IEntityTypeConfiguration<EmployeeSala
 
         builder.Property(employeeSalary => employeeSalary.Transportation)
             .HasConversion(transportation => transportation.Amount, amount => new Money(amount));
+
+        builder.Property(employeeSalary => employeeSalary.TotalSalary)
+            .HasConversion(totalSalary => totalSalary.Amount, amount => new Money(amount));
     }
 }

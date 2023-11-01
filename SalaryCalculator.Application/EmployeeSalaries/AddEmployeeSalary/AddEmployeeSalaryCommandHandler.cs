@@ -8,10 +8,10 @@ namespace SalaryCalculator.Application.EmployeeSalaries.AddEmployeeSalary;
 
 public class AddEmployeeSalaryCommandHandler : IRequestHandler<AddEmployeeSalaryCommand, Result>
 {
-    private readonly IEmployeeSalaryRepository _employeeSalaryRepository;
+    private readonly IRepository<EmployeeSalary, EmployeeSalaryId> _employeeSalaryRepository;
     private readonly IStringMapper<EmployeeSalary> _dataMapper;
 
-    public AddEmployeeSalaryCommandHandler(IEmployeeSalaryRepository employeeSalaryRepository, IStringMapper<EmployeeSalary> dataMapper)
+    public AddEmployeeSalaryCommandHandler(IRepository<EmployeeSalary, EmployeeSalaryId> employeeSalaryRepository, IStringMapper<EmployeeSalary> dataMapper)
     {
         _employeeSalaryRepository = employeeSalaryRepository;
         _dataMapper = dataMapper;
@@ -24,17 +24,16 @@ public class AddEmployeeSalaryCommandHandler : IRequestHandler<AddEmployeeSalary
         if (mappedData is null)
             return Result.Failure(Errors.FailedToMapData);
 
-        Money? overtimeMethodResult;
-        overtimeMethodResult = request.OvertimeCalculator switch
+        Money? overtimeMethodResult = request.OvertimeCalculator.ToLower() switch
         {
-            nameof(OvertimeMethods.CalculateA) => new(OvertimeMethods.CalculateA(mappedData.BasicSalary.Amount, mappedData.Allowance.Amount)),
-            nameof(OvertimeMethods.CalculateB) => new(OvertimeMethods.CalculateB(mappedData.BasicSalary.Amount, mappedData.Allowance.Amount)),
-            nameof(OvertimeMethods.CalculateC) => new(OvertimeMethods.CalculateC(mappedData.BasicSalary.Amount, mappedData.Allowance.Amount)),
+            "calculatea" => new(OvertimeMethods.CalculateA(mappedData.BasicSalary.Amount, mappedData.Allowance.Amount)),
+            "calculateb" => new(OvertimeMethods.CalculateB(mappedData.BasicSalary.Amount, mappedData.Allowance.Amount)),
+            "calculatec" => new(OvertimeMethods.CalculateC(mappedData.BasicSalary.Amount, mappedData.Allowance.Amount)),
             _ => null
         };
 
         if (overtimeMethodResult is null)
-            return Result.Failure(Errors.NotFoundMethod);
+            return Result.Failure(Errors.OvertimeMethodNotFound);
 
         mappedData.TotalSalary = mappedData.BasicSalary + mappedData.Allowance + mappedData.Transportation + overtimeMethodResult;
 

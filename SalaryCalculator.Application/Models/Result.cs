@@ -21,6 +21,6 @@ public static class Errors
 {
     public const string FailedToMapData = "Could not map the data string";
     public const string NotFound = "Could not find any salary record with the received id";
-    public const string NotFoundRange = "Could not find any salary record within the date range";
-    public const string NotFoundMethod = "Could not find the requested overtime method";
+    public const string NotFoundInRange = "Could not find any salary record within the date range";
+    public const string OvertimeMethodNotFound = "Could not find the requested overtime method";
 }

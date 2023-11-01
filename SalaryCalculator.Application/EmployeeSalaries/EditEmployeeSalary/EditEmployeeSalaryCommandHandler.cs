@@ -7,10 +7,10 @@ namespace SalaryCalculator.Application.EmployeeSalaries.EditEmployeeSalary;
 
 public class EditEmployeeSalaryCommandHandler : IRequestHandler<EditEmployeeSalaryCommand, Result>
 {
-    private readonly IEmployeeSalaryRepository _employeeSalaryRepository;
+    private readonly IRepository<EmployeeSalary, EmployeeSalaryId> _employeeSalaryRepository;
     private readonly IStringMapper<EmployeeSalary> _dataMapper;
 
-    public EditEmployeeSalaryCommandHandler(IEmployeeSalaryRepository employeeSalaryRepository, IStringMapper<EmployeeSalary> dataMapper)
+    public EditEmployeeSalaryCommandHandler(IRepository<EmployeeSalary, EmployeeSalaryId> employeeSalaryRepository, IStringMapper<EmployeeSalary> dataMapper)
     {
         _employeeSalaryRepository = employeeSalaryRepository;
         _dataMapper = dataMapper;

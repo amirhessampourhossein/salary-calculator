@@ -1,20 +1,21 @@
 ﻿using SalaryCalculator.Application.Abstractions;
+using SalaryCalculator.Application.EmployeeSalaries;
 using SalaryCalculator.Domain.EmployeeSalaries;
 
 namespace SalaryCalculator.Infrastructure.Services;
 
 public class StringMapper : IStringMapper<EmployeeSalary>
 {
-    private readonly List<IFormatMapper<EmployeeSalary>> _formatMappers;
+    private readonly List<IFormatMapper<EmployeeSalaryDto>> _formatMappers;
 
     public StringMapper()
     {
-        _formatMappers = new List<IFormatMapper<EmployeeSalary>>()
+        _formatMappers = new List<IFormatMapper<EmployeeSalaryDto>>()
         {
-            new JsonFormatMapper<EmployeeSalary>(),
-            new XmlFormatMapper<EmployeeSalary>(),
-            new CsvFormatMapper<EmployeeSalary>(),
-            new CustomFormatMapper<EmployeeSalary>()
+            new JsonFormatMapper<EmployeeSalaryDto>(),
+            new XmlFormatMapper<EmployeeSalaryDto>(),
+            new CsvFormatMapper<EmployeeSalaryDto>(),
+            new CustomFormatMapper<EmployeeSalaryDto>()
         };
     }
 
@@ -23,7 +24,14 @@ public class StringMapper : IStringMapper<EmployeeSalary>
         foreach (var formatMapper in _formatMappers)
         {
             if (formatMapper.CanMap(data))
-                return formatMapper.Map(data);
+            {
+                var mappedDto = formatMapper.Map(data);
+
+                if (mappedDto is null)
+                    return default;
+
+                return mappedDto.ToEntity();
+            }
         }
 
         return default;

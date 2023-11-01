@@ -14,4 +14,15 @@ public static class MappingExtensions
             Transportation = employeeSalary.Transportation.Amount,
             Date = employeeSalary.Date
         };
+
+    public static EmployeeSalary ToEntity(this EmployeeSalaryDto employeeSalaryDto)
+        => new(EmployeeSalaryId.New())
+        {
+            FirstName = new(employeeSalaryDto.FirstName),
+            LastName = new(employeeSalaryDto.LastName),
+            BasicSalary = new(employeeSalaryDto.BasicSalary),
+            Allowance = new(employeeSalaryDto.Allowance),
+            Transportation = new(employeeSalaryDto.Transportation),
+            Date = employeeSalaryDto.Date
+        };
 }
