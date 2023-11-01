@@ -3,5 +3,5 @@
 public interface IStringMapper<TDestination>
     where TDestination : class
 {
-    TDestination? Map(string data);
+    TDestination? Map(string data, string dataType);
 }

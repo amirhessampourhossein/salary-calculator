@@ -1,39 +1,39 @@
 ﻿using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.EmployeeSalaries;
 using SalaryCalculator.Domain.EmployeeSalaries;
+using SalaryCalculator.Infrastructure.Services.FormatMappers;
 
 namespace SalaryCalculator.Infrastructure.Services;
 
 public class StringMapper : IStringMapper<EmployeeSalary>
 {
-    private readonly List<IFormatMapper<EmployeeSalaryDto>> _formatMappers;
+    private readonly IDateConverter _dateConverter;
 
-    public StringMapper()
+    public StringMapper(IDateConverter dateConverter)
     {
-        _formatMappers = new List<IFormatMapper<EmployeeSalaryDto>>()
-        {
-            new JsonFormatMapper<EmployeeSalaryDto>(),
-            new XmlFormatMapper<EmployeeSalaryDto>(),
-            new CsvFormatMapper<EmployeeSalaryDto>(),
-            new CustomFormatMapper<EmployeeSalaryDto>()
-        };
+        _dateConverter = dateConverter;
     }
 
-    public EmployeeSalary? Map(string data)
+    public EmployeeSalary? Map(string data, string dataType)
     {
-        foreach (var formatMapper in _formatMappers)
+        var formatMapper = FormatMapper<EmployeeSalaryRequest>.GetMapperFromType(dataType);
+
+        if (formatMapper is null)
+            return null;
+
+        var employeeSalaryRequest = formatMapper.Map(data);
+
+        if (employeeSalaryRequest is null)
+            return null;
+
+        return new(EmployeeSalaryId.Empty)
         {
-            if (formatMapper.CanMap(data))
-            {
-                var mappedDto = formatMapper.Map(data);
-
-                if (mappedDto is null)
-                    return default;
-
-                return mappedDto.ToEntity();
-            }
-        }
-
-        return default;
+            FirstName = new(employeeSalaryRequest.FirstName),
+            LastName = new(employeeSalaryRequest.LastName),
+            BasicSalary = new(employeeSalaryRequest.BasicSalary),
+            Allowance = new(employeeSalaryRequest.Allowance),
+            Transportation = new(employeeSalaryRequest.Transportation),
+            Date = new(_dateConverter.ConvertToGregorianDateTime(employeeSalaryRequest.Date))
+        };
     }
 }

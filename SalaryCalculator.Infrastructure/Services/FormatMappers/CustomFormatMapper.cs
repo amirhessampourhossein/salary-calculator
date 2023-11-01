@@ -1,17 +1,16 @@
 ﻿using CsvHelper;
-using SalaryCalculator.Application.Abstractions;
+using CsvHelper.Configuration;
 using System.Globalization;
 using System.Text;
 
-namespace SalaryCalculator.Infrastructure.Services;
+namespace SalaryCalculator.Infrastructure.Services.FormatMappers;
 
-public class CsvFormatMapper<T> : IFormatMapper<T>
-    where T : class
+public class CustomFormatMapper<T> : FormatMapper<T> where T : class
 {
-    public bool CanMap(string data)
+    public override bool CanMap(string data)
     {
         var columns = string.Join(
-            ",",
+            "/",
             typeof(T)
             .GetProperties()
             .Select(property => property.Name)
@@ -20,11 +19,16 @@ public class CsvFormatMapper<T> : IFormatMapper<T>
         return data.ToLower().Contains(columns);
     }
 
-    public T? Map(string data)
+    public override T? Map(string data)
     {
+        var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = "/"
+        };
+
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
         using var reader = new StreamReader(stream);
-        using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
+        using var csvReader = new CsvReader(reader, configuration);
         return csvReader.GetRecord<T>();
     }
 }

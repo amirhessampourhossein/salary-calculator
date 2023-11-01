@@ -7,5 +7,9 @@ public abstract class Entity<TEntityId>
         Id = id;
     }
 
-    public TEntityId Id { get; init; }
+    protected Entity()
+    {
+    }
+
+    public TEntityId Id { get; set; }
 }

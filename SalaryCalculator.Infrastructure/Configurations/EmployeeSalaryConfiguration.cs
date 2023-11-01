@@ -13,24 +13,27 @@ public class EmployeeSalaryConfiguration : IEntityTypeConfiguration<EmployeeSala
         builder.HasKey(employeeSalary => employeeSalary.Id);
 
         builder.Property(employeeSalary => employeeSalary.Id)
-            .HasConversion(id => id.Value, value => new EmployeeSalaryId(value));
+            .HasConversion(id => id.Value, value => new(value));
 
         builder.Property(employeeSalary => employeeSalary.FirstName)
-            .HasConversion(firstName => firstName.Value, value => new FirstName(value));
+            .HasConversion(firstName => firstName.Value, value => new(value));
 
         builder.Property(employeeSalary => employeeSalary.LastName)
-            .HasConversion(lastName => lastName.Value, value => new LastName(value));
+            .HasConversion(lastName => lastName.Value, value => new(value));
 
         builder.Property(employeeSalary => employeeSalary.BasicSalary)
-            .HasConversion(salary => salary.Amount, amount => new Money(amount));
+            .HasConversion(salary => salary.Amount, amount => new(amount));
 
         builder.Property(employeeSalary => employeeSalary.Allowance)
-            .HasConversion(allowance => allowance.Amount, amount => new Money(amount));
+            .HasConversion(allowance => allowance.Amount, amount => new(amount));
 
         builder.Property(employeeSalary => employeeSalary.Transportation)
-            .HasConversion(transportation => transportation.Amount, amount => new Money(amount));
+            .HasConversion(transportation => transportation.Amount, amount => new(amount));
 
         builder.Property(employeeSalary => employeeSalary.TotalSalary)
-            .HasConversion(totalSalary => totalSalary.Amount, amount => new Money(amount));
+            .HasConversion(totalSalary => totalSalary.Amount, amount => new(amount));
+
+        builder.Property(employeeSalary => employeeSalary.Date)
+            .HasConversion(date => date.Value, value => new(value));
     }
 }

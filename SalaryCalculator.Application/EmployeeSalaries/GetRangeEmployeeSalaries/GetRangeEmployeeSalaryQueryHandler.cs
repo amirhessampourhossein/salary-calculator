@@ -5,26 +5,31 @@ using SalaryCalculator.Domain.EmployeeSalaries;
 
 namespace SalaryCalculator.Application.EmployeeSalaries.GetRangeEmployeeSalaries;
 
-public class GetRangeEmployeeSalaryQueryHandler : IRequestHandler<GetRangeEmployeeSalaryQuery, Result>
+public class GetRangeEmployeeSalaryQueryHandler : IRequestHandler<GetRangeEmployeeSalaryQuery, Result<IReadOnlyList<EmployeeSalaryDto>>>
 {
-    private readonly IRepository<EmployeeSalary, EmployeeSalaryId> _employeeSalaryRepository;
+    private readonly IEmployeeSalaryRepository _employeeSalaryRepository;
+    private readonly IDateConverter _dateConverter;
 
-    public GetRangeEmployeeSalaryQueryHandler(IRepository<EmployeeSalary, EmployeeSalaryId> employeeSalaryRepository)
+    public GetRangeEmployeeSalaryQueryHandler(IEmployeeSalaryRepository employeeSalaryRepository, IDateConverter dateConverter)
     {
         _employeeSalaryRepository = employeeSalaryRepository;
+        _dateConverter = dateConverter;
     }
 
-    public async Task<Result> Handle(GetRangeEmployeeSalaryQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IReadOnlyList<EmployeeSalaryDto>>> Handle(GetRangeEmployeeSalaryQuery request, CancellationToken cancellationToken)
     {
-        var entries = await _employeeSalaryRepository.GetRangeAsync(request.DateRange, cancellationToken);
+        Date startDate = new(_dateConverter.ConvertToGregorianDateTime(request.StartDate));
+        Date endDate = new(_dateConverter.ConvertToGregorianDateTime(request.EndDate));
 
-        if (entries is null || !entries.Any())
-            return Result.Failure(Errors.NotFoundInRange);
+        var employeeSalaries = await _employeeSalaryRepository.GetByDateRangeAsync(startDate, endDate);
 
-        var mappedEntries = entries
+        if (!employeeSalaries.Any())
+            return Result<IReadOnlyList<EmployeeSalaryDto>>.NotFound(Errors.SalaryRecordNotFoundInRange);
+
+        var resultValue = employeeSalaries
             .Select(employeeSalary => employeeSalary.ToDto())
             .ToList();
 
-        return Result.Success(mappedEntries);
+        return Result<IReadOnlyList<EmployeeSalaryDto>>.Ok(resultValue);
     }
 }

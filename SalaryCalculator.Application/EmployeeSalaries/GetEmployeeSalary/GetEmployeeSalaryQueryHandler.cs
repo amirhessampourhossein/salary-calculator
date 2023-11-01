@@ -1,28 +1,26 @@
 ﻿using MediatR;
-using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.Models;
-using SalaryCalculator.Domain.EmployeeSalaries;
 
 namespace SalaryCalculator.Application.EmployeeSalaries.GetEmployeeSalary;
 
-public class GetEmployeeSalaryQueryHandler : IRequestHandler<GetEmployeeSalaryQuery, Result>
+public class GetEmployeeSalaryQueryHandler : IRequestHandler<GetEmployeeSalaryQuery, Result<EmployeeSalaryDto>>
 {
-    private readonly IRepository<EmployeeSalary, EmployeeSalaryId> _employeeSalaryRepository;
+    private readonly IEmployeeSalaryRepository _employeeSalaryRepository;
 
-    public GetEmployeeSalaryQueryHandler(IRepository<EmployeeSalary, EmployeeSalaryId> employeeSalaryRepository)
+    public GetEmployeeSalaryQueryHandler(IEmployeeSalaryRepository employeeSalaryRepository)
     {
         _employeeSalaryRepository = employeeSalaryRepository;
     }
 
-    public async Task<Result> Handle(GetEmployeeSalaryQuery request, CancellationToken cancellationToken)
+    public async Task<Result<EmployeeSalaryDto>> Handle(GetEmployeeSalaryQuery request, CancellationToken cancellationToken)
     {
-        var entry = await _employeeSalaryRepository.GetAsync(
-            new EmployeeSalaryId(request.EmployeeSalaryId),
-            cancellationToken);
+        var target = await _employeeSalaryRepository.GetByIdAsync(new(request.EmployeeSalaryId));
 
-        if (entry is null)
-            return Result.Failure(Errors.NotFound);
+        if (target is null)
+            return Result<EmployeeSalaryDto>.NotFound(Errors.SalaryRecordNotFound);
 
-        return Result.Success(entry.ToDto());
+        var resultValue = target.ToDto();
+
+        return Result<EmployeeSalaryDto>.Ok(resultValue);
     }
 }

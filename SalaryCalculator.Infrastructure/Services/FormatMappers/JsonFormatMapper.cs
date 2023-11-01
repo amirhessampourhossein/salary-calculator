@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SalaryCalculator.Application.Abstractions;
 
-namespace SalaryCalculator.Infrastructure.Services;
+namespace SalaryCalculator.Infrastructure.Services.FormatMappers;
 
-public class JsonFormatMapper<T> : IFormatMapper<T>
-    where T : class
+public class JsonFormatMapper<T> : FormatMapper<T> where T : class
 {
-    public bool CanMap(string data)
+    public override bool CanMap(string data)
     {
         try
         {
@@ -20,7 +18,7 @@ public class JsonFormatMapper<T> : IFormatMapper<T>
         }
     }
 
-    public T? Map(string data)
+    public override T? Map(string data)
     {
         return JsonConvert.DeserializeObject<T>(data);
     }

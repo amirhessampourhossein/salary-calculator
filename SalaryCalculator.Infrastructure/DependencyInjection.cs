@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SalaryCalculator.Application.Abstractions;
+using SalaryCalculator.Application.EmployeeSalaries;
 using SalaryCalculator.Domain.EmployeeSalaries;
 using SalaryCalculator.Infrastructure.Repositories;
 using SalaryCalculator.Infrastructure.Services;
+using System.Globalization;
 
 namespace SalaryCalculator.Infrastructure;
 
@@ -20,9 +22,13 @@ public static class DependencyInjection
 
         services.AddSingleton<ISqlConnectionFactory>(_ => new SqlConnectionFactory(connectionString));
 
+        services.AddSingleton<PersianCalendar>();
+
+        services.AddTransient<IDateConverter, DateConverter>();
+
         services.AddTransient<IStringMapper<EmployeeSalary>, StringMapper>();
 
-        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        services.AddScoped<IEmployeeSalaryRepository, EmployeeSalaryRepository>();
 
         return services;
     }

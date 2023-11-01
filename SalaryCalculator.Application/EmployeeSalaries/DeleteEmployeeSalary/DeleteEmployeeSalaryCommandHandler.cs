@@ -1,28 +1,26 @@
 ﻿using MediatR;
-using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.Models;
-using SalaryCalculator.Domain.EmployeeSalaries;
 
 namespace SalaryCalculator.Application.EmployeeSalaries.DeleteEmployeeSalary;
 
-public class DeleteEmployeeSalaryCommandHandler : IRequestHandler<DeleteEmployeeSalaryCommand, Result>
+public class DeleteEmployeeSalaryCommandHandler : IRequestHandler<DeleteEmployeeSalaryCommand, Result<Guid?>>
 {
-    private readonly IRepository<EmployeeSalary, EmployeeSalaryId> _employeeSalaryRepository;
+    private readonly IEmployeeSalaryRepository _employeeSalaryRepository;
 
-    public DeleteEmployeeSalaryCommandHandler(IRepository<EmployeeSalary, EmployeeSalaryId> employeeSalaryRepository)
+    public DeleteEmployeeSalaryCommandHandler(IEmployeeSalaryRepository employeeSalaryRepository)
     {
         _employeeSalaryRepository = employeeSalaryRepository;
     }
 
-    public async Task<Result> Handle(DeleteEmployeeSalaryCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid?>> Handle(DeleteEmployeeSalaryCommand request, CancellationToken cancellationToken)
     {
-        var deletedId = await _employeeSalaryRepository.DeleteAsync(
-            new EmployeeSalaryId(request.EmployeeSalaryId),
-            cancellationToken);
+        var target = await _employeeSalaryRepository.GetByIdAsync(new(request.EmployeeSalaryId));
 
-        if (deletedId is null)
-            return Result.Failure(Errors.NotFound);
+        if (target is null)
+            return Result<Guid?>.NotFound(Errors.SalaryRecordNotFound);
 
-        return Result.Success(deletedId.Value);
+        await _employeeSalaryRepository.DeleteAsync(target);
+
+        return Result<Guid?>.Ok(Messages.SuccessfulDelete);
     }
 }

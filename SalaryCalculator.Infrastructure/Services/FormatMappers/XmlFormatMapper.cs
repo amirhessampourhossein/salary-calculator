@@ -1,13 +1,11 @@
-﻿using SalaryCalculator.Application.Abstractions;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Serialization;
 
-namespace SalaryCalculator.Infrastructure.Services;
+namespace SalaryCalculator.Infrastructure.Services.FormatMappers;
 
-public class XmlFormatMapper<T> : IFormatMapper<T>
-    where T : class
+public class XmlFormatMapper<T> : FormatMapper<T> where T : class
 {
-    public bool CanMap(string data)
+    public override bool CanMap(string data)
     {
         try
         {
@@ -20,7 +18,7 @@ public class XmlFormatMapper<T> : IFormatMapper<T>
         }
     }
 
-    public T? Map(string data)
+    public override T? Map(string data)
     {
         var serializer = new XmlSerializer(typeof(T));
         using var reader = new StringReader(data);
