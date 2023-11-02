@@ -2,29 +2,32 @@
 
 namespace SalaryCalculator.Application.Models;
 
-public class Result<TData>
+public class Result<TData> : Result
 {
-    public bool IsSuccess { get; init; }
-    public HttpStatusCode StatusCode { get; init; }
-    public string Message { get; init; } = string.Empty;
     public TData? Data { get; init; }
 
-    public static Result<TData> Ok(string message) => new()
+    public new static Result<TData> Ok(string message) => new()
     {
         IsSuccess = true,
         StatusCode = HttpStatusCode.OK,
+        Message = message
+    };
+    public new static Result<TData> NotFound(string message) => new()
+    {
+        IsSuccess = false,
+        StatusCode = HttpStatusCode.NotFound,
+        Message = message
+    };
+    public new static Result<TData> BadRequest(string message) => new()
+    {
+        IsSuccess = false,
+        StatusCode = HttpStatusCode.BadRequest,
         Message = message
     };
     public static Result<TData> Ok(TData data) => new()
     {
         IsSuccess = true,
         StatusCode = HttpStatusCode.OK,
-        Data = data
-    };
-    public static Result<TData> Created(TData data) => new()
-    {
-        IsSuccess = true,
-        StatusCode = HttpStatusCode.Created,
         Data = data
     };
     public static Result<TData> Created(TData data, string message) => new()
@@ -34,13 +37,27 @@ public class Result<TData>
         Data = data,
         Message = message
     };
-    public static Result<TData> NotFound(string message) => new()
+}
+
+public class Result
+{
+    public bool IsSuccess { get; init; }
+    public HttpStatusCode StatusCode { get; init; }
+    public string Message { get; init; } = string.Empty;
+
+    public static Result Ok(string message) => new()
+    {
+        IsSuccess = true,
+        StatusCode = HttpStatusCode.OK,
+        Message = message
+    };
+    public static Result NotFound(string message) => new()
     {
         IsSuccess = false,
         StatusCode = HttpStatusCode.NotFound,
         Message = message
     };
-    public static Result<TData> BadRequest(string message) => new()
+    public static Result BadRequest(string message) => new()
     {
         IsSuccess = false,
         StatusCode = HttpStatusCode.BadRequest,

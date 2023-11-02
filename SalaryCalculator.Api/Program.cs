@@ -1,4 +1,5 @@
 using MediatR;
+using SalaryCalculator.Api.Middlewares;
 using SalaryCalculator.Api.Requests;
 using SalaryCalculator.Application;
 using SalaryCalculator.Application.EmployeeSalaries.CreateEmployeeSalary;
@@ -27,6 +28,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandlingMiddleware();
 
 var group = app.MapGroup("/api/salary");
 

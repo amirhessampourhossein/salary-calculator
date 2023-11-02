@@ -1,24 +1,10 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace SalaryCalculator.Infrastructure.Services.FormatMappers;
 
-public class JsonFormatMapper<T> : FormatMapper<T> where T : class
+public class JsonFormatMapper : FormatMapper
 {
-    public override bool CanMap(string data)
-    {
-        try
-        {
-            JToken.Parse(data);
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-    }
-
-    public override T? Map(string data)
+    protected override T? TryMap<T>(string data) where T : class
     {
         return JsonConvert.DeserializeObject<T>(data);
     }

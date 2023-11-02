@@ -7,9 +7,11 @@ public abstract class Entity<TEntityId>
         Id = id;
     }
 
-    protected Entity()
+#pragma warning disable CS8618
+    protected Entity() //Dapper Access
     {
     }
+#pragma warning restore CS8618
 
     public TEntityId Id { get; set; }
 }

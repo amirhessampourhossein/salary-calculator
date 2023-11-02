@@ -7,7 +7,7 @@ public static class OvertimeService
 {
     public static Money? CalculateOvertime(EmployeeSalary employeeSalary, string overtimeCalculator)
     {
-        return overtimeCalculator.ToLower() switch
+        return overtimeCalculator.Trim().ToLower() switch
         {
             "calculatea" => new(OvertimeMethods.CalculateA(employeeSalary.BasicSalary.Amount, employeeSalary.Allowance.Amount)),
             "calculateb" => new(OvertimeMethods.CalculateB(employeeSalary.BasicSalary.Amount, employeeSalary.Allowance.Amount)),

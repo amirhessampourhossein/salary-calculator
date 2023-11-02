@@ -37,12 +37,13 @@ public class EmployeeSalaryRepository : IEmployeeSalaryRepository
     {
         using var connection = _connectionFactory.CreateConnection();
 
-        var startDateInvariant = startDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-        var endDateInvariant = endDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        var sql = $@"
+        select * 
+        from dbo.EmployeeSalaries 
+        where date >= '{startDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}' 
+        and date <= '{endDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}'";
 
-        var sql = $"select * from dbo.EmployeeSalaries where date >= '{startDateInvariant}' and date <= '{endDateInvariant}'";
-
-        return (await connection.QueryAsync<EmployeeSalaryDto>(sql))
+        return (await connection.QueryAsync<EmployeeSalaryResponse>(sql))
             .Select(dto => dto.ToEntity())
             .ToList();
     }
@@ -53,7 +54,7 @@ public class EmployeeSalaryRepository : IEmployeeSalaryRepository
 
         var sql = $"select * from dbo.EmployeeSalaries where Id = '{employeeSalaryId.Value}'";
 
-        return (await connection.QuerySingleOrDefaultAsync<EmployeeSalaryDto>(sql))?.ToEntity();
+        return (await connection.QuerySingleOrDefaultAsync<EmployeeSalaryResponse>(sql))?.ToEntity();
     }
 
     public async Task UpdateAsync(EmployeeSalary newEmployeeSalary)

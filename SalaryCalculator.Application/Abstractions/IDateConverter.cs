@@ -2,6 +2,6 @@
 
 public interface IDateConverter
 {
-    DateTime ConvertToGregorianDateTime(string persianDate);
-    string ConvertToPersianDateTime(DateTime dateTime);
+    DateTime ConvertToGregorianDate(string persianDate);
+    string ConvertToPersianDate(DateTime dateTime);
 }

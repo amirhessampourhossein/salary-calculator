@@ -1,5 +1,8 @@
 ﻿namespace SalaryCalculator.Application.EmployeeSalaries;
 
+/// <summary>
+/// this class is used to deserialize the string data and then map it to the respective entity
+/// </summary>
 public class EmployeeSalaryRequest
 {
     public string FirstName { get; set; } = string.Empty;

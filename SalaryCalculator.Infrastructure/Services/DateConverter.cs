@@ -12,7 +12,7 @@ public class DateConverter : IDateConverter
         _persianCalendar = persianCalendar;
     }
 
-    public DateTime ConvertToGregorianDateTime(string persianDate)
+    public DateTime ConvertToGregorianDate(string persianDate)
     {
         if (persianDate.Contains('/'))
             persianDate = persianDate.Replace("/", "");
@@ -24,7 +24,7 @@ public class DateConverter : IDateConverter
         return _persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
     }
 
-    public string ConvertToPersianDateTime(DateTime dateTime)
+    public string ConvertToPersianDate(DateTime dateTime)
     {
         var year = _persianCalendar.GetYear(dateTime).ToString("0000");
         var month = _persianCalendar.GetMonth(dateTime).ToString("00");

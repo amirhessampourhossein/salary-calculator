@@ -4,7 +4,7 @@ namespace SalaryCalculator.Application.EmployeeSalaries;
 
 public static class MappingExtensions
 {
-    public static EmployeeSalaryDto ToDto(this EmployeeSalary employeeSalary)
+    public static EmployeeSalaryResponse ToDto(this EmployeeSalary employeeSalary)
         => new()
         {
             Id = employeeSalary.Id.Value,
@@ -16,7 +16,7 @@ public static class MappingExtensions
             Date = employeeSalary.Date.Value
         };
 
-    public static EmployeeSalary ToEntity(this EmployeeSalaryDto employeeSalaryDto)
+    public static EmployeeSalary ToEntity(this EmployeeSalaryResponse employeeSalaryDto)
         => new(new(employeeSalaryDto.Id))
         {
             FirstName = new(employeeSalaryDto.FirstName),

@@ -1,19 +1,29 @@
 ﻿namespace SalaryCalculator.Infrastructure.Services.FormatMappers;
 
-public abstract class FormatMapper<T>
-    where T : class
+public abstract class FormatMapper
 {
-    public abstract bool CanMap(string data);
-    public abstract T? Map(string data);
+    public T? Map<T>(string data) where T : class
+    {
+        try
+        {
+            return TryMap<T>(data);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 
-    public static FormatMapper<T>? GetMapperFromType(string type)
+    protected abstract T? TryMap<T>(string data) where T : class;
+
+    public static FormatMapper? GetMapperFromType(string type)
     {
         return type.Trim().ToLower() switch
         {
-            "json" => new JsonFormatMapper<T>(),
-            "xml" => new XmlFormatMapper<T>(),
-            "csv" => new CsvFormatMapper<T>(),
-            "custom" => new CustomFormatMapper<T>(),
+            "json" => new JsonFormatMapper(),
+            "xml" => new XmlFormatMapper(),
+            "csv" => new CsvFormatMapper(),
+            "custom" => new CustomFormatMapper(),
             _ => null
         };
     }

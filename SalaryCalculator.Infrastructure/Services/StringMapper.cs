@@ -16,12 +16,12 @@ public class StringMapper : IStringMapper<EmployeeSalary>
 
     public EmployeeSalary? Map(string data, string dataType)
     {
-        var formatMapper = FormatMapper<EmployeeSalaryRequest>.GetMapperFromType(dataType);
+        var formatMapper = FormatMapper.GetMapperFromType(dataType);
 
         if (formatMapper is null)
             return null;
 
-        var employeeSalaryRequest = formatMapper.Map(data);
+        var employeeSalaryRequest = formatMapper.Map<EmployeeSalaryRequest>(data);
 
         if (employeeSalaryRequest is null)
             return null;
@@ -33,7 +33,7 @@ public class StringMapper : IStringMapper<EmployeeSalary>
             BasicSalary = new(employeeSalaryRequest.BasicSalary),
             Allowance = new(employeeSalaryRequest.Allowance),
             Transportation = new(employeeSalaryRequest.Transportation),
-            Date = new(_dateConverter.ConvertToGregorianDateTime(employeeSalaryRequest.Date))
+            Date = new(_dateConverter.ConvertToGregorianDate(employeeSalaryRequest.Date))
         };
     }
 }
