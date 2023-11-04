@@ -16,7 +16,7 @@ public abstract class FormatMapper
 
     protected abstract T? TryMap<T>(string data) where T : class;
 
-    public static FormatMapper? GetMapperFromType(string type)
+    public static FormatMapper? CreateMapperFromType(string type)
     {
         return type.Trim().ToLower() switch
         {

@@ -3,11 +3,11 @@ using System.Globalization;
 
 namespace SalaryCalculator.Infrastructure.Services;
 
-public class DateConverter : IDateConverter
+public class PersianDateConverter : IDateConverter
 {
     private readonly PersianCalendar _persianCalendar;
 
-    public DateConverter(PersianCalendar persianCalendar)
+    public PersianDateConverter(PersianCalendar persianCalendar)
     {
         _persianCalendar = persianCalendar;
     }

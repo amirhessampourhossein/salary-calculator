@@ -24,7 +24,7 @@ public static class DependencyInjection
 
         services.AddSingleton<PersianCalendar>();
 
-        services.AddTransient<IDateConverter, DateConverter>();
+        services.AddTransient<IDateConverter, PersianDateConverter>();
 
         services.AddTransient<IStringMapper<EmployeeSalary>, StringMapper>();
 

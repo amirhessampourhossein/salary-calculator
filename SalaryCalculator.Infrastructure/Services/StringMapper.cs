@@ -16,7 +16,7 @@ public class StringMapper : IStringMapper<EmployeeSalary>
 
     public EmployeeSalary? Map(string data, string dataType)
     {
-        var formatMapper = FormatMapper.GetMapperFromType(dataType);
+        var formatMapper = FormatMapper.CreateMapperFromType(dataType);
 
         if (formatMapper is null)
             return null;

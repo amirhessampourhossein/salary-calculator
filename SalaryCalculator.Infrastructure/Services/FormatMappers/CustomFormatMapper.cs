@@ -1,7 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
-using System.Text;
 
 namespace SalaryCalculator.Infrastructure.Services.FormatMappers;
 
@@ -14,8 +13,7 @@ public class CustomFormatMapper : FormatMapper
             Delimiter = "/"
         };
 
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(data));
-        using var reader = new StreamReader(stream);
+        using var reader = new StringReader(data);
         using var csvReader = new CsvReader(reader, configuration);
         csvReader.Read();
         return csvReader.GetRecord<T>();
