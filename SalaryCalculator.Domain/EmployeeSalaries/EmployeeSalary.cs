@@ -4,14 +4,6 @@ namespace SalaryCalculator.Domain.EmployeeSalaries;
 
 public class EmployeeSalary : Entity<Id>
 {
-    public EmployeeSalary(Id id) : base(id)
-    {
-    }
-
-    public EmployeeSalary()
-    {
-    }
-
     public Name FirstName { get; set; } = string.Empty;
     public Name LastName { get; set; } = string.Empty;
     public Money BasicSalary { get; set; } = 0;
