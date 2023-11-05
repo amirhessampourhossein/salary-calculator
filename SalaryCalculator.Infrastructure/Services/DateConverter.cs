@@ -1,4 +1,5 @@
 ﻿using SalaryCalculator.Application.Abstractions;
+using SalaryCalculator.Application.Exceptions;
 using System.Globalization;
 
 namespace SalaryCalculator.Infrastructure.Services;
@@ -14,16 +15,23 @@ public class PersianDateConverter : IDateConverter
 
     public DateOnly ConvertToGregorianDate(string persianDate)
     {
-        if (persianDate.Contains('/'))
-            persianDate = persianDate.Replace("/", "");
+        try
+        {
+            if (persianDate.Contains('/'))
+                persianDate = persianDate.Replace("/", "");
 
-        var year = int.Parse(persianDate[0..4]);
-        var month = int.Parse(persianDate[4..6]);
-        var day = int.Parse(persianDate[6..8]);
+            var year = int.Parse(persianDate[0..4]);
+            var month = int.Parse(persianDate[4..6]);
+            var day = int.Parse(persianDate[6..8]);
 
-        var date = _persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
+            var date = _persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
 
-        return DateOnly.FromDateTime(date);
+            return DateOnly.FromDateTime(date);
+        }
+        catch (Exception)
+        {
+            throw new InvalidPersianDateException();
+        }
     }
 
     public string ConvertToPersianDate(DateOnly date)
