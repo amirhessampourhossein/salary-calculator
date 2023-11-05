@@ -6,7 +6,7 @@ namespace SalaryCalculator.Infrastructure.Services.FormatMappers;
 
 public class CustomFormatMapper : FormatMapper
 {
-    protected override T? TryMap<T>(string data) where T : class
+    protected override T? Map<T>(string data) where T : class
     {
         var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
         {

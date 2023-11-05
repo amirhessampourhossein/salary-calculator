@@ -34,6 +34,6 @@ public class EmployeeSalaryConfiguration : IEntityTypeConfiguration<EmployeeSala
             .HasConversion(totalSalary => totalSalary.Amount, amount => new(amount));
 
         builder.Property(employeeSalary => employeeSalary.Date)
-            .HasConversion(date => date.Value, value => new(value));
+            .HasConversion(date => date.Value.ToDateTime(TimeOnly.MinValue), value => new(DateOnly.FromDateTime(value)));
     }
 }

@@ -2,19 +2,7 @@
 
 public abstract class FormatMapper
 {
-    public T? Map<T>(string data) where T : class
-    {
-        try
-        {
-            return TryMap<T>(data);
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-
-    protected abstract T? TryMap<T>(string data) where T : class;
+    public abstract T? Map<T>(string data) where T : class;
 
     public static FormatMapper? CreateMapperFromType(string type)
     {

@@ -1,8 +1,9 @@
 ﻿using Dapper;
 using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.EmployeeSalaries;
+using SalaryCalculator.Application.Exceptions;
 using SalaryCalculator.Domain.EmployeeSalaries;
-using System.Globalization;
+using Throw;
 
 namespace SalaryCalculator.Infrastructure.Repositories;
 
@@ -17,7 +18,7 @@ public class EmployeeSalaryRepository : IEmployeeSalaryRepository
         _connectionFactory = connectionFactory;
     }
 
-    public async Task<EmployeeSalaryId> AddAsync(EmployeeSalary employeeSalary)
+    public async Task<Id> AddAsync(EmployeeSalary employeeSalary)
     {
         var addedEntry = await _dbContext.EmployeeSalaries.AddAsync(employeeSalary);
 
@@ -26,9 +27,11 @@ public class EmployeeSalaryRepository : IEmployeeSalaryRepository
         return addedEntry.Entity.Id;
     }
 
-    public async Task DeleteAsync(EmployeeSalary employeeSalary)
+    public async Task DeleteAsync(Id employeeSalaryId)
     {
-        _dbContext.EmployeeSalaries.Remove(employeeSalary!);
+        var target = await GetByIdAsync(employeeSalaryId);
+
+        _dbContext.EmployeeSalaries.Remove(target);
 
         await _dbContext.SaveChangesAsync();
     }
@@ -39,26 +42,36 @@ public class EmployeeSalaryRepository : IEmployeeSalaryRepository
 
         var sql = $@"
         select * 
-        from dbo.EmployeeSalaries 
-        where date >= '{startDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}' 
-        and date <= '{endDate.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}'";
+        from EmployeeSalaries 
+        where date >= '{startDate.ToInvariantDate()}' 
+        and date <= '{endDate.ToInvariantDate()}'";
 
-        return (await connection.QueryAsync<EmployeeSalaryResponse>(sql))
-            .Select(dto => dto.ToEntity())
-            .ToList();
+        var result = await connection.QueryAsync<EmployeeSalary>(sql);
+
+        result.Throw(() => throw new EntryNotFoundException()).IfCountEquals(0);
+
+        return result.ToList();
     }
 
-    public async Task<EmployeeSalary?> GetByIdAsync(EmployeeSalaryId employeeSalaryId)
+    public async Task<EmployeeSalary> GetByIdAsync(Id employeeSalaryId)
     {
         using var connection = _connectionFactory.CreateConnection();
 
-        var sql = $"select * from dbo.EmployeeSalaries where Id = '{employeeSalaryId.Value}'";
+        var sql = $"select * from EmployeeSalaries where Id = '{employeeSalaryId.Value}'";
 
-        return (await connection.QuerySingleOrDefaultAsync<EmployeeSalaryResponse>(sql))?.ToEntity();
+        var result = await connection.QuerySingleOrDefaultAsync<EmployeeSalary>(sql);
+
+        result.ThrowIfNull(() => throw new EntryNotFoundException());
+
+        return result;
     }
 
-    public async Task UpdateAsync(EmployeeSalary newEmployeeSalary)
+    public async Task UpdateAsync(Id employeeSalaryId, EmployeeSalary newEmployeeSalary)
     {
+        var existing = await GetByIdAsync(employeeSalaryId);
+
+        newEmployeeSalary.Id = existing.Id;
+
         _dbContext.EmployeeSalaries.Update(newEmployeeSalary);
 
         await _dbContext.SaveChangesAsync();

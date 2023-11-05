@@ -4,9 +4,9 @@ namespace SalaryCalculator.Application.EmployeeSalaries;
 
 public interface IEmployeeSalaryRepository
 {
-    Task<EmployeeSalaryId> AddAsync(EmployeeSalary employeeSalary);
-    Task UpdateAsync(EmployeeSalary newEmployeeSalary);
-    Task DeleteAsync(EmployeeSalary employeeSalary);
-    Task<EmployeeSalary?> GetByIdAsync(EmployeeSalaryId employeeSalaryId);
+    Task<Id> AddAsync(EmployeeSalary employeeSalary);
+    Task UpdateAsync(Id employeeSalaryId, EmployeeSalary newEmployeeSalary);
+    Task DeleteAsync(Id employeeSalaryId);
+    Task<EmployeeSalary> GetByIdAsync(Id employeeSalaryId);
     Task<IReadOnlyList<EmployeeSalary>> GetByDateRangeAsync(Date startDate, Date endDate);
 }

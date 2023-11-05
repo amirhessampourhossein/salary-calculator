@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.EmployeeSalaries;
 using SalaryCalculator.Domain.EmployeeSalaries;
+using SalaryCalculator.Infrastructure.Configurations;
 using SalaryCalculator.Infrastructure.Repositories;
 using SalaryCalculator.Infrastructure.Services;
 using System.Globalization;
@@ -18,13 +20,18 @@ public static class DependencyInjection
             configuration.GetConnectionString("Default") ??
             throw new ArgumentNullException(nameof(configuration));
 
-        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-
-        services.AddSingleton<ISqlConnectionFactory>(_ => new SqlConnectionFactory(connectionString));
+        SqlMapper.AddTypeHandler(new IdTypeHandler());
+        SqlMapper.AddTypeHandler(new NameTypeHandler());
+        SqlMapper.AddTypeHandler(new MoneyTypeHandler());
+        SqlMapper.AddTypeHandler(new DateTypeHandler());
 
         services.AddSingleton<PersianCalendar>();
 
         services.AddTransient<IDateConverter, PersianDateConverter>();
+
+        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+        services.AddSingleton<ISqlConnectionFactory>(_ => new SqlConnectionFactory(connectionString));
 
         services.AddTransient<IStringMapper<EmployeeSalary>, StringMapper>();
 

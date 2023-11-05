@@ -5,7 +5,7 @@ using SalaryCalculator.Domain.EmployeeSalaries;
 
 namespace SalaryCalculator.Application.EmployeeSalaries.GetRangeEmployeeSalaries;
 
-public class GetRangeEmployeeSalaryQueryHandler : IRequestHandler<GetRangeEmployeeSalaryQuery, Result<IReadOnlyList<EmployeeSalaryResponse>>>
+public class GetRangeEmployeeSalaryQueryHandler : IRequestHandler<GetRangeEmployeeSalaryQuery, Result>
 {
     private readonly IEmployeeSalaryRepository _employeeSalaryRepository;
     private readonly IDateConverter _dateConverter;
@@ -16,20 +16,17 @@ public class GetRangeEmployeeSalaryQueryHandler : IRequestHandler<GetRangeEmploy
         _dateConverter = dateConverter;
     }
 
-    public async Task<Result<IReadOnlyList<EmployeeSalaryResponse>>> Handle(GetRangeEmployeeSalaryQuery request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(GetRangeEmployeeSalaryQuery request, CancellationToken cancellationToken)
     {
         Date startDate = new(_dateConverter.ConvertToGregorianDate(request.PersianStartDate));
         Date endDate = new(_dateConverter.ConvertToGregorianDate(request.PersianEndDate));
 
         var employeeSalaries = await _employeeSalaryRepository.GetByDateRangeAsync(startDate, endDate);
 
-        if (!employeeSalaries.Any())
-            return Result<IReadOnlyList<EmployeeSalaryResponse>>.NotFound(Errors.SalaryRecordNotFoundInRange);
-
         var resultValue = employeeSalaries
-            .Select(employeeSalary => employeeSalary.ToDto())
+            .Select(employeeSalary => employeeSalary.ToDto(_dateConverter))
             .ToList();
 
-        return Result<IReadOnlyList<EmployeeSalaryResponse>>.Ok(resultValue);
+        return Result.Success(resultValue, Result.SuccessMessages.Read);
     }
 }

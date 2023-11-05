@@ -1,7 +1,9 @@
 ﻿using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.EmployeeSalaries;
+using SalaryCalculator.Application.Exceptions;
 using SalaryCalculator.Domain.EmployeeSalaries;
 using SalaryCalculator.Infrastructure.Services.FormatMappers;
+using Throw;
 
 namespace SalaryCalculator.Infrastructure.Services;
 
@@ -14,26 +16,16 @@ public class StringMapper : IStringMapper<EmployeeSalary>
         _dateConverter = dateConverter;
     }
 
-    public EmployeeSalary? Map(string data, string dataType)
+    public EmployeeSalary Map(string data, string dataType)
     {
         var formatMapper = FormatMapper.CreateMapperFromType(dataType);
 
-        if (formatMapper is null)
-            return null;
+        formatMapper.ThrowIfNull(() => throw new FailedToCreateFormatMapperException());
 
-        var employeeSalaryRequest = formatMapper.Map<EmployeeSalaryRequest>(data);
+        var employeeSalaryDto = formatMapper.Map<EmployeeSalaryDto>(data);
 
-        if (employeeSalaryRequest is null)
-            return null;
+        employeeSalaryDto.ThrowIfNull(() => throw new FailedToMapStringException());
 
-        return new(EmployeeSalaryId.Empty)
-        {
-            FirstName = new(employeeSalaryRequest.FirstName),
-            LastName = new(employeeSalaryRequest.LastName),
-            BasicSalary = new(employeeSalaryRequest.BasicSalary),
-            Allowance = new(employeeSalaryRequest.Allowance),
-            Transportation = new(employeeSalaryRequest.Transportation),
-            Date = new(_dateConverter.ConvertToGregorianDate(employeeSalaryRequest.Date))
-        };
+        return employeeSalaryDto.ToEntity(_dateConverter);
     }
 }

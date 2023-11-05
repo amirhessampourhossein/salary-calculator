@@ -1,12 +1,6 @@
 ﻿namespace SalaryCalculator.Application.EmployeeSalaries;
 
-/// <summary>
-/// This class is used in <br/>
-/// <see cref="IEmployeeSalaryRepository.GetByIdAsync"></see> and <br/>
-/// <see cref="IEmployeeSalaryRepository.GetByDateRangeAsync"/> methods <br/>
-/// to return the fetched entries to presentation
-/// </summary>
-public class EmployeeSalaryResponse
+public class EmployeeSalaryDto
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
@@ -15,5 +9,5 @@ public class EmployeeSalaryResponse
     public decimal Allowance { get; set; }
     public decimal Transportation { get; set; }
     public decimal TotalSalary { get; set; }
-    public DateTime Date { get; set; }
+    public string Date { get; set; } = string.Empty;
 }

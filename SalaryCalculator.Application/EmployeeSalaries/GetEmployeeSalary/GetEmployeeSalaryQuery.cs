@@ -3,4 +3,4 @@ using SalaryCalculator.Application.Models;
 
 namespace SalaryCalculator.Application.EmployeeSalaries.GetEmployeeSalary;
 
-public record GetEmployeeSalaryQuery(Guid EmployeeSalaryId) : IRequest<Result<EmployeeSalaryResponse>>;
+public record GetEmployeeSalaryQuery(Guid EmployeeSalaryId) : IRequest<Result>;

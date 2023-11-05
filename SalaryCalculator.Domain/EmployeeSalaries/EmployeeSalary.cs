@@ -2,9 +2,9 @@
 
 namespace SalaryCalculator.Domain.EmployeeSalaries;
 
-public class EmployeeSalary : Entity<EmployeeSalaryId>
+public class EmployeeSalary : Entity<Id>
 {
-    public EmployeeSalary(EmployeeSalaryId id) : base(id)
+    public EmployeeSalary(Id id) : base(id)
     {
     }
 
@@ -12,8 +12,8 @@ public class EmployeeSalary : Entity<EmployeeSalaryId>
     {
     }
 
-    public FirstName FirstName { get; set; } = FirstName.Empty;
-    public LastName LastName { get; set; } = LastName.Empty;
+    public Name FirstName { get; set; } = Name.Empty;
+    public Name LastName { get; set; } = Name.Empty;
     public Money BasicSalary { get; set; } = Money.Zero;
     public Money Allowance { get; set; } = Money.Zero;
     public Money Transportation { get; set; } = Money.Zero;

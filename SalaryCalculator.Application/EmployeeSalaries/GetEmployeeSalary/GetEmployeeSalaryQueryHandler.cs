@@ -1,26 +1,24 @@
 ﻿using MediatR;
+using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.Models;
 
 namespace SalaryCalculator.Application.EmployeeSalaries.GetEmployeeSalary;
 
-public class GetEmployeeSalaryQueryHandler : IRequestHandler<GetEmployeeSalaryQuery, Result<EmployeeSalaryResponse>>
+public class GetEmployeeSalaryQueryHandler : IRequestHandler<GetEmployeeSalaryQuery, Result>
 {
     private readonly IEmployeeSalaryRepository _employeeSalaryRepository;
+    private readonly IDateConverter _dateConverter;
 
-    public GetEmployeeSalaryQueryHandler(IEmployeeSalaryRepository employeeSalaryRepository)
+    public GetEmployeeSalaryQueryHandler(IEmployeeSalaryRepository employeeSalaryRepository, IDateConverter dateConverter)
     {
         _employeeSalaryRepository = employeeSalaryRepository;
+        _dateConverter = dateConverter;
     }
 
-    public async Task<Result<EmployeeSalaryResponse>> Handle(GetEmployeeSalaryQuery request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(GetEmployeeSalaryQuery request, CancellationToken cancellationToken)
     {
         var target = await _employeeSalaryRepository.GetByIdAsync(new(request.EmployeeSalaryId));
 
-        if (target is null)
-            return Result<EmployeeSalaryResponse>.NotFound(Errors.SalaryRecordNotFound);
-
-        var resultValue = target.ToDto();
-
-        return Result<EmployeeSalaryResponse>.Ok(resultValue);
+        return Result.Success(target.ToDto(_dateConverter), Result.SuccessMessages.Read);
     }
 }

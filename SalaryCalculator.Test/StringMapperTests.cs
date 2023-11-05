@@ -1,17 +1,13 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SalaryCalculator.Application.EmployeeSalaries;
 using SalaryCalculator.Infrastructure.Services;
-using System.Globalization;
 using System.Xml.Serialization;
 
 namespace SalaryCalculator.Test;
 
 public class StringMapperTests
 {
-    private static readonly EmployeeSalaryRequest TestRecord = new()
+    private static readonly EmployeeSalaryDto TestRecord = new()
     {
         FirstName = "Test",
         LastName = "Test",
@@ -45,7 +41,7 @@ public class StringMapperTests
     public void Map_WhenDataIsXml_ReturnsNonNull()
     {
         //Arrange
-        var serializer = new XmlSerializer(typeof(EmployeeSalaryRequest));
+        var serializer = new XmlSerializer(TestRecord.GetType());
         using var writer = new StringWriter();
         serializer.Serialize(writer, TestRecord);
         var xml = writer.ToString();

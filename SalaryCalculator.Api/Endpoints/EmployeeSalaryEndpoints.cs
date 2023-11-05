@@ -42,7 +42,7 @@ public static class EmployeeSalaryEndpoints
                 dataType,
                 request.OvertimeCalculator));
 
-        return TypedResults.Json(result, statusCode: (int)result.StatusCode);
+        return TypedResults.Created($"/api/salary/{(Guid)result.Data}", result);
     }
 
     public static async Task<IResult> UpdateEmployeeSalary(ISender sender, string dataType, Guid id, EmployeeSalaryOvertimeRequestBody request)
@@ -53,27 +53,27 @@ public static class EmployeeSalaryEndpoints
                 dataType,
                 request.OvertimeCalculator));
 
-        return TypedResults.Json(result, statusCode: (int)result.StatusCode);
+        return TypedResults.Ok(result);
     }
 
     public static async Task<IResult> DeleteEmployeeSalary(ISender sender, Guid id)
     {
         var result = await sender.Send(new DeleteEmployeeSalaryCommand(id));
 
-        return TypedResults.Json(result, statusCode: (int)result.StatusCode);
+        return TypedResults.Ok(result);
     }
 
     public static async Task<IResult> GetEmployeeSalary(ISender sender, Guid id)
     {
         var result = await sender.Send(new GetEmployeeSalaryQuery(id));
 
-        return TypedResults.Json(result, statusCode: (int)result.StatusCode);
+        return TypedResults.Ok(result);
     }
 
     public static async Task<IResult> GetEmployeeSalaries(ISender sender, string startDate, string endDate)
     {
         var result = await sender.Send(new GetRangeEmployeeSalaryQuery(startDate, endDate));
 
-        return TypedResults.Json(result, statusCode: (int)result.StatusCode);
+        return TypedResults.Ok(result);
     }
 }

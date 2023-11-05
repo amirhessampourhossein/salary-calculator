@@ -18,30 +18,17 @@ public class UpdateEmployeeSalaryCommandHandler : IRequestHandler<UpdateEmployee
 
     public async Task<Result> Handle(UpdateEmployeeSalaryCommand request, CancellationToken cancellationToken)
     {
-        var target = await _employeeSalaryRepository.GetByIdAsync(new(request.EmployeeSalaryId));
+        var newEmployeeSalary = _stringMapper.Map(request.Data, request.DataType);
 
-        if (target is null)
-            return Result.NotFound(Errors.SalaryRecordNotFound);
+        var overtime = OvertimeService.CalculateOvertime(newEmployeeSalary, request.OvertimeMethod);
 
-        var employeeSalary = _stringMapper.Map(request.Data, request.DataType);
-
-        if (employeeSalary is null)
-            return Result.BadRequest(Errors.CouldNotMapData);
-
-        var overtime = OvertimeService.CalculateOvertime(employeeSalary, request.OvertimeMethod);
-
-        if (overtime is null)
-            return Result.NotFound(Errors.OvertimeMethodNotFound);
-
-        employeeSalary.TotalSalary = employeeSalary.BasicSalary
-            + employeeSalary.Allowance
-            + employeeSalary.Transportation
+        newEmployeeSalary.TotalSalary = newEmployeeSalary.BasicSalary
+            + newEmployeeSalary.Allowance
+            + newEmployeeSalary.Transportation
             + overtime;
 
-        employeeSalary.Id = target.Id;
+        await _employeeSalaryRepository.UpdateAsync(new(request.EmployeeSalaryId), newEmployeeSalary);
 
-        await _employeeSalaryRepository.UpdateAsync(employeeSalary);
-
-        return Result.Ok(Messages.SuccessfulUpdate);
+        return Result.Success(Result.SuccessMessages.Update);
     }
 }

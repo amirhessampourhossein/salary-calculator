@@ -1,4 +1,6 @@
-﻿using SalaryCalculator.Application.Models;
+﻿using SalaryCalculator.Application.Exceptions;
+using SalaryCalculator.Application.Models;
+using System.Net;
 
 namespace SalaryCalculator.Api.Middlewares
 {
@@ -19,16 +21,18 @@ namespace SalaryCalculator.Api.Middlewares
             }
             catch (Exception ex)
             {
-                var result = new Result
+                if (ex is ExceptionBase exceptionBase)
                 {
-                    IsSuccess = false,
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    Message = ex.Message,
-                };
+                    httpContext.Response.StatusCode = (int)exceptionBase.StatusCode;
 
-                httpContext.Response.StatusCode = (int)result.StatusCode;
+                    await httpContext.Response.WriteAsJsonAsync(Result.Failure(exceptionBase.Message));
 
-                await httpContext.Response.WriteAsJsonAsync(result);
+                    return;
+                }
+
+                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                await httpContext.Response.WriteAsJsonAsync(Result.Failure(ex.Message));
             }
         }
     }
