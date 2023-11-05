@@ -17,8 +17,8 @@ public class GetEmployeeSalaryQueryHandler : IRequestHandler<GetEmployeeSalaryQu
 
     public async Task<Result> Handle(GetEmployeeSalaryQuery request, CancellationToken cancellationToken)
     {
-        var target = await _employeeSalaryRepository.GetByIdAsync(new(request.EmployeeSalaryId));
+        var employeeSalary = await _employeeSalaryRepository.GetByIdAsync(request.EmployeeSalaryId);
 
-        return Result.Success(target.ToDto(_dateConverter), Result.SuccessMessages.Read);
+        return Result.Success(employeeSalary.ToDto(_dateConverter), Result.SuccessMessages.Read);
     }
 }

@@ -13,27 +13,27 @@ public class EmployeeSalaryConfiguration : IEntityTypeConfiguration<EmployeeSala
         builder.HasKey(employeeSalary => employeeSalary.Id);
 
         builder.Property(employeeSalary => employeeSalary.Id)
-            .HasConversion(id => id.Value, value => new(value));
+            .HasConversion(id => id.Value, value => value);
 
         builder.Property(employeeSalary => employeeSalary.FirstName)
-            .HasConversion(firstName => firstName.Value, value => new(value));
+            .HasConversion(firstName => firstName.Value, value => value);
 
         builder.Property(employeeSalary => employeeSalary.LastName)
-            .HasConversion(lastName => lastName.Value, value => new(value));
+            .HasConversion(lastName => lastName.Value, value => value);
 
         builder.Property(employeeSalary => employeeSalary.BasicSalary)
-            .HasConversion(salary => salary.Amount, amount => new(amount));
+            .HasConversion(salary => salary.Amount, amount => amount);
 
         builder.Property(employeeSalary => employeeSalary.Allowance)
-            .HasConversion(allowance => allowance.Amount, amount => new(amount));
+            .HasConversion(allowance => allowance.Amount, amount => amount);
 
         builder.Property(employeeSalary => employeeSalary.Transportation)
-            .HasConversion(transportation => transportation.Amount, amount => new(amount));
+            .HasConversion(transportation => transportation.Amount, amount => amount);
 
         builder.Property(employeeSalary => employeeSalary.TotalSalary)
-            .HasConversion(totalSalary => totalSalary.Amount, amount => new(amount));
+            .HasConversion(totalSalary => totalSalary.Amount, amount => amount);
 
         builder.Property(employeeSalary => employeeSalary.Date)
-            .HasConversion(date => date.Value.ToDateTime(TimeOnly.MinValue), value => new(DateOnly.FromDateTime(value)));
+            .HasConversion(date => date.Value.ToDateTime(TimeOnly.MinValue), value => DateOnly.FromDateTime(value));
     }
 }

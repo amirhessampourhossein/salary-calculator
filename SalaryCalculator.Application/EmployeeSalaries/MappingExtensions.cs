@@ -19,13 +19,13 @@ public static class MappingExtensions
 
     public static EmployeeSalary ToEntity(this EmployeeSalaryDto employeeSalaryDto, IDateConverter dateConverter) => new()
     {
-        Id = new(employeeSalaryDto.Id),
-        FirstName = new(employeeSalaryDto.FirstName),
-        LastName = new(employeeSalaryDto.LastName),
-        BasicSalary = new(employeeSalaryDto.BasicSalary),
-        Allowance = new(employeeSalaryDto.Allowance),
-        Transportation = new(employeeSalaryDto.Transportation),
-        TotalSalary = new(employeeSalaryDto.TotalSalary),
-        Date = new(dateConverter.ConvertToGregorianDate(employeeSalaryDto.Date))
+        Id = employeeSalaryDto.Id,
+        FirstName = employeeSalaryDto.FirstName,
+        LastName = employeeSalaryDto.LastName,
+        BasicSalary = employeeSalaryDto.BasicSalary,
+        Allowance = employeeSalaryDto.Allowance,
+        Transportation = employeeSalaryDto.Transportation,
+        TotalSalary = employeeSalaryDto.TotalSalary,
+        Date = dateConverter.ConvertToGregorianDate(employeeSalaryDto.Date)
     };
 }

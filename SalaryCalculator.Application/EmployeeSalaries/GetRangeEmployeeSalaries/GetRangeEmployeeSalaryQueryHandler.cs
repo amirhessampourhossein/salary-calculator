@@ -18,8 +18,8 @@ public class GetRangeEmployeeSalaryQueryHandler : IRequestHandler<GetRangeEmploy
 
     public async Task<Result> Handle(GetRangeEmployeeSalaryQuery request, CancellationToken cancellationToken)
     {
-        Date startDate = new(_dateConverter.ConvertToGregorianDate(request.PersianStartDate));
-        Date endDate = new(_dateConverter.ConvertToGregorianDate(request.PersianEndDate));
+        Date startDate = _dateConverter.ConvertToGregorianDate(request.PersianStartDate);
+        Date endDate = _dateConverter.ConvertToGregorianDate(request.PersianEndDate);
 
         var employeeSalaries = await _employeeSalaryRepository.GetByDateRangeAsync(startDate, endDate);
 

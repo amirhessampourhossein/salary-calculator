@@ -27,7 +27,7 @@ public class UpdateEmployeeSalaryCommandHandler : IRequestHandler<UpdateEmployee
             + newEmployeeSalary.Transportation
             + overtime;
 
-        await _employeeSalaryRepository.UpdateAsync(new(request.EmployeeSalaryId), newEmployeeSalary);
+        await _employeeSalaryRepository.UpdateAsync(request.EmployeeSalaryId, newEmployeeSalary);
 
         return Result.Success(Result.SuccessMessages.Update);
     }

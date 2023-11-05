@@ -2,6 +2,5 @@
 
 public record Id(Guid Value)
 {
-    public static Id New() => new(Guid.NewGuid());
-    public static Id Empty => new(Guid.Empty);
+    public static implicit operator Id(Guid value) => new(value);
 }

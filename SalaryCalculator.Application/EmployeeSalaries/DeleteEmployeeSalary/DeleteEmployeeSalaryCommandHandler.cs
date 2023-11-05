@@ -14,7 +14,7 @@ public class DeleteEmployeeSalaryCommandHandler : IRequestHandler<DeleteEmployee
 
     public async Task<Result> Handle(DeleteEmployeeSalaryCommand request, CancellationToken cancellationToken)
     {
-        await _employeeSalaryRepository.DeleteAsync(new(request.EmployeeSalaryId));
+        await _employeeSalaryRepository.DeleteAsync(request.EmployeeSalaryId);
 
         return Result.Success(Result.SuccessMessages.Delete);
     }

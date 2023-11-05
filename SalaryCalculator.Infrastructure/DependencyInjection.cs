@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.EmployeeSalaries;
 using SalaryCalculator.Domain.EmployeeSalaries;
-using SalaryCalculator.Infrastructure.Configurations;
+using SalaryCalculator.Infrastructure.Configurations.TypeHandlers;
 using SalaryCalculator.Infrastructure.Repositories;
 using SalaryCalculator.Infrastructure.Services;
 using System.Globalization;

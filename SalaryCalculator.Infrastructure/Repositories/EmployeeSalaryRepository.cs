@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SalaryCalculator.Application.Abstractions;
 using SalaryCalculator.Application.EmployeeSalaries;
 using SalaryCalculator.Application.Exceptions;
@@ -68,9 +69,11 @@ public class EmployeeSalaryRepository : IEmployeeSalaryRepository
 
     public async Task UpdateAsync(Id employeeSalaryId, EmployeeSalary newEmployeeSalary)
     {
-        var existing = await GetByIdAsync(employeeSalaryId);
+        var exists = await _dbContext.EmployeeSalaries.AnyAsync(employeeSalary => employeeSalary.Id == employeeSalaryId);
 
-        newEmployeeSalary.Id = existing.Id;
+        exists.Throw(() => throw new EntryNotFoundException()).IfFalse();
+
+        newEmployeeSalary.Id = employeeSalaryId;
 
         _dbContext.EmployeeSalaries.Update(newEmployeeSalary);
 

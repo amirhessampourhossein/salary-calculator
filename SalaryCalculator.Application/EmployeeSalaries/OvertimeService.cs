@@ -11,9 +11,9 @@ public static class OvertimeService
     {
         Money? overtime = overtimeCalculator.Trim().ToLower() switch
         {
-            "calculatea" => new(OvertimeMethods.CalculateA(employeeSalary.BasicSalary.Amount, employeeSalary.Allowance.Amount)),
-            "calculateb" => new(OvertimeMethods.CalculateB(employeeSalary.BasicSalary.Amount, employeeSalary.Allowance.Amount)),
-            "calculatec" => new(OvertimeMethods.CalculateC(employeeSalary.BasicSalary.Amount, employeeSalary.Allowance.Amount)),
+            "calculatea" => OvertimeMethods.CalculateA(employeeSalary.BasicSalary.Amount, employeeSalary.Allowance.Amount),
+            "calculateb" => OvertimeMethods.CalculateB(employeeSalary.BasicSalary.Amount, employeeSalary.Allowance.Amount),
+            "calculatec" => OvertimeMethods.CalculateC(employeeSalary.BasicSalary.Amount, employeeSalary.Allowance.Amount),
             _ => null
         };
 

@@ -27,7 +27,7 @@ public class CreateEmployeeSalaryCommandHandler : IRequestHandler<CreateEmployee
             + employeeSalary.Transportation
             + overtime;
 
-        employeeSalary.Id = Id.New();
+        employeeSalary.Id = Guid.NewGuid();
 
         var addedId = await _employeeSalaryRepository.AddAsync(employeeSalary);
 
