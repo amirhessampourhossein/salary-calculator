@@ -6,7 +6,7 @@ namespace SalaryCalculator.Infrastructure.Services.FormatMappers;
 
 public class CsvFormatMapper : FormatMapper
 {
-    protected override T? Map<T>(string data) where T : class
+    public override T? Map<T>(string data) where T : class
     {
         using var reader = new StringReader(data);
         using var csvReader = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
