@@ -17,7 +17,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C4C5E539-F44
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D89394B-FCE3-45A9-AFFC-0E2D3CC0FE29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalaryCalculator.Test", "SalaryCalculator.Test\SalaryCalculator.Test.csproj", "{072ACF04-CD8D-4B23-9F08-1BCC3070D85F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalaryCalculator.Test", "SalaryCalculator.Test\SalaryCalculator.Test.csproj", "{072ACF04-CD8D-4B23-9F08-1BCC3070D85F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{332E6C22-7177-43E5-B337-DF688B7EBE4E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
