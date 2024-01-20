@@ -4,7 +4,7 @@ namespace SalaryCalculator.Application.Exceptions;
 
 public class InvalidPersianDateException : ExceptionBase
 {
-    public InvalidPersianDateException() 
+    public InvalidPersianDateException()
         : base("Input date is invalid", HttpStatusCode.BadRequest)
     {
     }
