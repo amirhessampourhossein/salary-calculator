@@ -7,15 +7,9 @@ using Throw;
 
 namespace SalaryCalculator.Infrastructure.Services;
 
-public class StringMapper : IStringMapper<EmployeeSalary>
+public class StringMapper(IDateConverter dateConverter)
+    : IStringMapper<EmployeeSalary>
 {
-    private readonly IDateConverter _dateConverter;
-
-    public StringMapper(IDateConverter dateConverter)
-    {
-        _dateConverter = dateConverter;
-    }
-
     public EmployeeSalary Map(string data, string dataType)
     {
         var formatMapper = FormatMapper.CreateMapperFromType(dataType);
@@ -26,6 +20,6 @@ public class StringMapper : IStringMapper<EmployeeSalary>
 
         employeeSalaryDto.ThrowIfNull(() => throw new FailedToMapStringException());
 
-        return employeeSalaryDto.ToEntity(_dateConverter);
+        return employeeSalaryDto.ToEntity(dateConverter);
     }
 }

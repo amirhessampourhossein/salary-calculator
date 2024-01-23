@@ -4,18 +4,12 @@ using System.Data;
 
 namespace SalaryCalculator.Infrastructure.Services;
 
-public class SqlConnectionFactory : ISqlConnectionFactory
+public class SqlConnectionFactory(string connectionString)
+    : ISqlConnectionFactory
 {
-    private readonly string _connectionString;
-
-    public SqlConnectionFactory(string connectionString)
-    {
-        _connectionString = connectionString;
-    }
-
     public IDbConnection CreateConnection()
     {
-        var connection = new SqlConnection(_connectionString);
+        var connection = new SqlConnection(connectionString);
         connection.Open();
 
         return connection;

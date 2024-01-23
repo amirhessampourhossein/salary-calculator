@@ -3,13 +3,9 @@ using SalaryCalculator.Domain.EmployeeSalaries;
 
 namespace SalaryCalculator.Infrastructure;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions options)
+    : DbContext(options)
 {
-    public ApplicationDbContext(DbContextOptions options)
-        : base(options)
-    {
-    }
-
     public DbSet<EmployeeSalary> EmployeeSalaries => Set<EmployeeSalary>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

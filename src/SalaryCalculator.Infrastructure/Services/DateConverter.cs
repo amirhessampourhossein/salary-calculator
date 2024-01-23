@@ -4,15 +4,9 @@ using System.Globalization;
 
 namespace SalaryCalculator.Infrastructure.Services;
 
-public class PersianDateConverter : IDateConverter
+public class PersianDateConverter(PersianCalendar persianCalendar)
+    : IDateConverter
 {
-    private readonly PersianCalendar _persianCalendar;
-
-    public PersianDateConverter(PersianCalendar persianCalendar)
-    {
-        _persianCalendar = persianCalendar;
-    }
-
     public DateOnly ConvertToGregorianDate(string persianDate)
     {
         try
@@ -24,7 +18,7 @@ public class PersianDateConverter : IDateConverter
             var month = int.Parse(persianDate[4..6]);
             var day = int.Parse(persianDate[6..8]);
 
-            var date = _persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
+            var date = persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
 
             return DateOnly.FromDateTime(date);
         }
@@ -36,15 +30,15 @@ public class PersianDateConverter : IDateConverter
 
     public string ConvertToPersianDate(DateOnly date)
     {
-        var year = _persianCalendar
+        var year = persianCalendar
             .GetYear(date.ToDateTime(TimeOnly.MinValue))
             .ToString("0000");
 
-        var month = _persianCalendar
+        var month = persianCalendar
             .GetMonth(date.ToDateTime(TimeOnly.MinValue))
             .ToString("00");
 
-        var day = _persianCalendar
+        var day = persianCalendar
             .GetDayOfMonth(date.ToDateTime(TimeOnly.MinValue))
             .ToString("00");
 
